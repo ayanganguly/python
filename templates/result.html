@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- DASHBOARD GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- PERFORMANCE CARD -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl p-8 rounded-2xl">
+        <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+            <i data-feather="bar-chart-2"></i>
+            Performance Score
+        </h3>
+
+        <p class="text-6xl font-extrabold text-indigo-700 mt-2">{{ performance }}</p>
+
+        <canvas id="perfChart" class="mt-6"></canvas>
+    </div>
+
+    <!-- LEARNING PATH -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl p-8 rounded-2xl">
+        <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+            <i data-feather="map"></i>
+            Learning Path
+        </h3>
+
+        <p class="text-5xl font-extrabold text-green-600 mt-3">{{ path }}</p>
+
+        <p class="text-slate-600 mt-4">
+            Based on performance and learning behavior, this is the ideal pacing for the student.
+        </p>
+    </div>
+
+    <!-- RECOMMENDED DIFFICULTY -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl p-8 rounded-2xl">
+        <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+            <i data-feather="layers"></i>
+            Recommended Difficulty
+        </h3>
+
+        <p class="text-4xl font-bold text-blue-600 mt-3">{{ diff }}</p>
+
+        <p class="text-slate-600 mt-3">
+            Content difficulty level chosen by the AI based on cognitive load and mastery metrics.
+        </p>
+    </div>
+
+    <!-- READINESS SCORES -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl p-8 rounded-2xl">
+        <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+            <i data-feather="check-circle"></i>
+            Readiness Scores
+        </h3>
+
+        <div class="mt-4 space-y-2">
+            <p class="text-lg"><span class="font-bold">Logistic Regression:</span> 
+                <span class="px-3 py-1 rounded-lg 
+                    {% if ready_log %} bg-green-200 text-green-700 {% else %} bg-red-200 text-red-700 {% endif %}">
+                    {{ ready_log }}
+                </span>
+            </p>
+
+            <p class="text-lg"><span class="font-bold">SVC:</span> 
+                <span class="px-3 py-1 rounded-lg 
+                    {% if ready_svc %} bg-green-200 text-green-700 {% else %} bg-red-200 text-red-700 {% endif %}">
+                    {{ ready_svc }}
+                </span>
+            </p>
+        </div>
+
+        <p class="text-slate-600 mt-4">
+            Agreement: <strong>{{ agree }}</strong>
+        </p>
+    </div>
+
+</div>
+
+
+<!-- AI SUMMARY -->
+<div class="bg-white/90 backdrop-blur-xl shadow-xl p-8 rounded-2xl mt-10">
+    <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2">
+        <i data-feather="sparkles"></i>
+        AI Summary
+    </h3>
+
+    <p class="mt-4 text-slate-700 text-lg leading-relaxed">
+        {% if performance > 75 %}
+            The student shows strong mastery and high performance levels. A fast learning path is suitable, 
+            supported by consistent engagement and low fatigue. They are ready for advanced modules.
+        {% elif performance > 50 %}
+            The student is performing well and can handle moderate pacing. Some difficulty can be increased gradually.
+        {% else %}
+            The student requires foundational reinforcement. A slower-paced learning path is recommended with more revision cycles.
+        {% endif %}
+    </p>
+</div>
+
+
+<!-- CONFIDENCE METER -->
+<div class="bg-white/90 shadow-xl p-8 rounded-2xl mt-10 backdrop-blur-xl">
+    <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+        <i data-feather="activity"></i>
+        Confidence Level
+    </h3>
+
+    {% set conf = performance if performance <= 100 else 100 %}
+    <div class="w-full bg-slate-200 rounded-full h-4 mt-4">
+        <div class="h-4 rounded-full bg-indigo-600" style="width: {{ conf }}%;"></div>
+    </div>
+
+    <p class="text-right mt-2 font-semibold text-indigo-700">{{ conf }}% Confidence</p>
+</div>
+
+
+<!-- AI RECOMMENDATIONS -->
+<div class="bg-white/90 shadow-xl p-8 rounded-2xl mt-10 backdrop-blur-xl">
+    <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2">
+        <i data-feather="bookmark"></i>
+        Personalized AI Recommendations
+    </h3>
+
+    <ul class="list-disc ml-6 mt-4 text-slate-700 space-y-2 text-lg">
+        <li>Recommended daily study time: 
+            <strong>
+                {% if performance > 75 %} 1.5 hours
+                {% elif performance > 50 %} 2 hours
+                {% else %} 3 hours
+                {% endif %}
+            </strong>
+        </li>
+
+        <li>Suggested weekly revision cycles: 
+            <strong>
+                {% if performance > 75 %} 2 sessions
+                {% elif performance > 50 %} 3 sessions
+                {% else %} 4–5 sessions
+                {% endif %}
+            </strong>
+        </li>
+
+        <li>
+            Cognitive load suggests: 
+            <strong>
+                {% if diff == "Hard" %} Increase advanced problem-solving tasks.
+                {% elif diff == "Medium" %} Balanced content with periodic difficulty spikes.
+                {% else %} Focus on basics and reinforcement exercises.
+                {% endif %}
+            </strong>
+        </li>
+
+        <li>
+            Engagement level indicates the student is 
+            <strong>
+                {% if performance > 75 %} highly motivated. Keep momentum.
+                {% elif performance > 50 %} moderately engaged. Add interactive content.
+                {% else %} losing focus. Reduce workload and add guided sessions.
+                {% endif %}
+            </strong>
+        </li>
+    </ul>
+</div>
+
+
+<!-- BACK BUTTON -->
+<div class="mt-10">
+    <a href="/" class="text-indigo-700 hover:underline">
+        <i data-feather="arrow-left"></i> Back
+    </a>
+</div>
+
+
+<!-- CHART SCRIPT -->
+<script>
+    const ctx = document.getElementById("perfChart");
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["0", "25", "50", "75", "100"],
+            datasets: [{
+                label: "Performance Score",
+                data: [0, 25, 50, 75, {{ performance }}],
+                borderColor: "#4f46e5",
+                borderWidth: 3,
+                pointRadius: 5,
+                tension: 0.4,
+                fill: false
+            }]
+        }
+    });
+</script>
+
+{% endblock %}

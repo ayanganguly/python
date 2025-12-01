@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- HERO SECTION -->
+<div class="text-center mb-12">
+    <h1 class="text-5xl font-extrabold text-slate-900 drop-shadow-lg">
+        AI Student Learning Predictor
+    </h1>
+    <p class="mt-4 text-lg text-slate-700">
+        A modern AI engine that analyzes performance, cognition, and behavior to recommend personalized learning paths.
+    </p>
+</div>
+
+<!-- MAIN WRAPPER -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+    <!-- LEFT SIDEBAR CARD (AI Assistant) -->
+    <div class="bg-white/70 backdrop-blur-xl shadow-xl rounded-2xl p-8 h-fit">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i data-feather="bot"></i> AI Assistant Tips
+        </h2>
+
+        <ul class="mt-4 text-slate-700 space-y-3 text-sm leading-relaxed">
+            <li>🎯 Enter realistic values within the suggested ranges.</li>
+            <li>📊 The prediction uses 5 ML models in combination.</li>
+            <li>🧠 Cognitive and behavioral metrics heavily influence path selection.</li>
+            <li>✨ Look for hints (ℹ️) next to each field.</li>
+        </ul>
+
+        <div class="mt-8 bg-indigo-600 text-white px-4 py-3 rounded-xl text-center shadow-lg">
+            AI Ready to Predict Your Best Learning Path
+        </div>
+    </div>
+
+    <!-- FORM AREA -->
+    <div class="lg:col-span-2">
+        
+        <div class="bg-white/80 backdrop-blur-xl shadow-xl p-10 rounded-2xl">
+
+            <h2 class="text-2xl font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                <i data-feather="sliders"></i> Student Input Form
+            </h2>
+
+            <form action="/predict" method="POST">
+
+                <!-- FIELD MACRO -->
+                {% macro field(name, label, placeholder, tooltip) %}
+                <div>
+                    <label class="text-sm font-semibold block mb-1 text-slate-700">
+                        {{ label }}
+                        <span class="relative group ml-1 cursor-pointer">
+                            <i data-feather="info" class="w-4 h-4 text-indigo-600"></i>
+                            <span class="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 
+                                bg-slate-900 text-white text-xs p-3 rounded w-56 -left-20 top-5 transition-all">
+                                {{ tooltip }}
+                            </span>
+                        </span>
+                    </label>
+                    <input type="number" step="any" name="{{ name }}" placeholder="{{ placeholder }}"
+                           class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-400 
+                           shadow-sm outline-none" required>
+                </div>
+                {% endmacro %}
+
+                <!-- PERFORMANCE METRICS -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                        <i data-feather="award"></i> Performance Metrics
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {{ field('prior_knowledge_score', 'Prior Knowledge Score', 'e.g., 52', 'Prior understanding (0–100).') }}
+                        {{ field('avg_quiz_score', 'Avg Quiz Score', 'e.g., 75', 'Average quiz score (0–100).') }}
+                    </div>
+                </div>
+
+                <!-- COGNITIVE METRICS -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-purple-700 mb-3 flex items-center gap-2">
+                        <i data-feather="cpu"></i> Cognitive Metrics
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {{ field('cognitive_load_score', 'Cognitive Load Score', 'e.g., 4.5', 'Mental effort (0–10).') }}
+                        {{ field('avg_time_per_question', 'Avg Time Per Question (sec)', 'e.g., 45', 'Time per question.') }}
+                        {{ field('error_rate', 'Error Rate (0–1)', 'e.g., 0.22', 'Mistake ratio (0–1).') }}
+                        {{ field('concept_mastery_rate', 'Concept Mastery (%)', 'e.g., 65', 'Mastery (0–100).') }}
+                    </div>
+                </div>
+
+                <!-- BEHAVIOR METRICS -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-green-700 mb-3 flex items-center gap-2">
+                        <i data-feather="activity"></i> Behavioral Metrics
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {{ field('revision_frequency', 'Revision Frequency', 'e.g., 4', 'Revisions per week.') }}
+                        {{ field('help_requests_count', 'Help Requests Count', 'e.g., 3', 'Times help requested.') }}
+                        {{ field('attention_span_score', 'Attention Span Score', 'e.g., 7', 'Focus ability (0–10).') }}
+                        {{ field('mental_fatigue_score', 'Mental Fatigue Score', 'e.g., 3', 'Fatigue level (0–10).') }}
+                        {{ field('time_variation', 'Time Variation (sec)', 'e.g., 12', 'Speed inconsistency.') }}
+                        {{ field('engagement_rate', 'Engagement Rate (%)', 'e.g., 75', 'Participation level (0–100).') }}
+                        {{ field('avg_study_time_per_day', 'Avg Study Time Per Day (hrs)', 'e.g., 2.5', 'Study hours/day.') }}
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <div class="text-right">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 px-10 py-3 text-white font-semibold 
+                                   rounded-xl shadow-lg transform transition hover:-translate-y-1">
+                        Predict Learning Path
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

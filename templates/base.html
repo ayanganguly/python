@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title if title else "AI Learning System" }}</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="bg-gradient-to-br from-slate-100 to-indigo-200 min-h-screen">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white/50 backdrop-blur shadow sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-700">
+                <i data-feather="activity" class="inline w-6 h-6 mr-1"></i>
+                AI Learning Path
+            </h1>
+
+            <a href="/" class="text-indigo-700 hover:text-indigo-900 font-medium">Home</a>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        {% block content %}{% endblock %}
+    </main>
+
+<script>
+    feather.replace()
+</script>
+
+</body>
+</html>
